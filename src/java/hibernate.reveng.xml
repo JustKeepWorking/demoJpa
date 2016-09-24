@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-schema="LAB"/>
+  <table-filter match-name="ROLEPERMISION"/>
+  <table-filter match-name="USERCLAIM"/>
+  <table-filter match-name="METHOD"/>
+  <table-filter match-name="ROLECLAIM"/>
+  <table-filter match-name="USERROLE"/>
+  <table-filter match-name="USERLOGIN"/>
+  <table-filter match-name="MENU"/>
+  <table-filter match-name="USERACCOUNT"/>
+  <table-filter match-name="ROLE"/>
+  <table-filter match-name="USERTOKEN"/>
+</hibernate-reverse-engineering>

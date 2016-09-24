@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
+    <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:orclHCMUT</property>
+    <property name="hibernate.connection.username">lab</property>
+    <property name="hibernate.connection.password">lab</property>
+    <property name="hibernate.jdbc.use_streams_for_binary">false</property>
+    <mapping class="entities.Menu"/>
+    <mapping class="entities.Method"/>
+    <mapping class="entities.Role"/>
+    <mapping class="entities.RoleClaim"/>
+    <mapping class="entities.RolePermision"/>
+    <mapping class="entities.RolePermisionPK"/>
+    <mapping class="entities.UserAccount"/>
+    <mapping class="entities.UserClaim"/>
+    <mapping class="entities.UserClaimPK"/>
+    <mapping class="entities.UserLogin"/>
+    <mapping class="entities.UserToken"/>
+
+  </session-factory>
+  
+  
+</hibernate-configuration>

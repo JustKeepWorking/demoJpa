@@ -1,4 +1,3 @@
-
 package core;
 
 import java.io.Serializable;
@@ -10,12 +9,13 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
-public class GenericDAOJpaImpl<T, PK extends Serializable> implements GenericDAO<T,PK> {
+public class GenericDAOJpaImpl<T, PK extends Serializable> implements GenericDAO<T, PK> {
 //    protected static EntityManagerFactory factory = Persistence.createEntityManagerFactory("demoJpaPU");
+
     @PersistenceUnit(name = "demoJpaPU")
     protected static EntityManagerFactory factory;
-    
-    protected  Class<T> entityClass;
+
+    protected Class<T> entityClass;
 
     public GenericDAOJpaImpl() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass()
@@ -24,12 +24,9 @@ public class GenericDAOJpaImpl<T, PK extends Serializable> implements GenericDAO
                 .getActualTypeArguments()[0];
     }
 
-    
-    
     public GenericDAOJpaImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
-
 
     @Override
     public T create(T t) {
@@ -59,7 +56,7 @@ public class GenericDAOJpaImpl<T, PK extends Serializable> implements GenericDAO
         entityManager.close();
         return result;
     }
-    
+
     @Override
     public T update(T t) {
         EntityManager entityManager = factory.createEntityManager();
@@ -79,7 +76,5 @@ public class GenericDAOJpaImpl<T, PK extends Serializable> implements GenericDAO
         entityManager.getTransaction().commit();
         entityManager.close();
     }
-
-    
 
 }

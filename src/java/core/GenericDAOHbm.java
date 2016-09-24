@@ -11,11 +11,13 @@ import java.util.List;
 /**
  *
  * @author Hai Nguyen
+ * @param <T>
+ * @param <PK>
  */
-interface GenericDAO<T, PK extends Serializable> {
-    T create(T t);
+public interface GenericDAOHbm<T, PK extends Serializable> {
+    boolean create(T t);
     T read(PK pk);
     List<T> read();
-    T update(T t);
-    void delete(T t);
+    boolean update(T t);
+    boolean delete(T t);
 }

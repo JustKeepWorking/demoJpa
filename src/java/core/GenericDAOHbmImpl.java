@@ -6,7 +6,10 @@
 package core;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.logging.Logger;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,40 +20,106 @@ import org.hibernate.Transaction;
  * @param <T>
  * @param <PK>
  */
-public class GenericDAOHbmImpl<T, PK extends Serializable> implements GenericDAO<T, PK> {
-    
+public class GenericDAOHbmImpl<T, PK extends Serializable> implements GenericDAOHbm<T, PK> {
+
+    protected static final Logger LOG = Logger.getLogger(GenericDAOHbmImpl.class.getName());
     protected SessionFactory sf = HibernateUtil.getSessionFactory();
-    
+    protected Class<T> entityClass;
+
+    public GenericDAOHbmImpl() {
+        ParameterizedType genericSuperclass = (ParameterizedType) getClass()
+                .getGenericSuperclass();
+        this.entityClass = (Class<T>) genericSuperclass
+                .getActualTypeArguments()[0];
+    }
+
+    public GenericDAOHbmImpl(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
     @Override
-    public T create(T t) {
+    public boolean create(T t) {
         Session s = sf.openSession();
-        Transaction tx =s.beginTransaction();
-        s.save(t);
-        tx.commit();
-        s.close();
-        return t;
+        Transaction tx = s.beginTransaction();
+        try {
+            PK pk = (PK) s.save(t);
+            tx.commit();
+            return true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            s.close();
+        }
     }
 
     @Override
     public T read(PK pk) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session s = sf.openSession();
+        Transaction tx = s.beginTransaction();
+        try {
+            T t = (T) s.createCriteria(entityClass, (String) pk);
+            return t;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return null;
+        } finally {
+            s.close();
+        }
     }
 
     @Override
     public List<T> read() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session s = sf.openSession();
+        Transaction tx = s.beginTransaction();
+        try {
+            return s.createCriteria(entityClass).list();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return null;
+        } finally {
+            s.close();
+        }
     }
 
     @Override
-    public T update(T t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean update(T t) {
+        Session s = sf.openSession();
+        Transaction tx = s.beginTransaction();
+        try {
+            s.update(t);
+            return true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            s.close();
+        }
     }
 
     @Override
-    public void delete(T t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(T t) {
+        Session s = sf.openSession();
+        Transaction tx = s.beginTransaction();
+        try {
+            s.delete(t);
+            return true;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            s.close();
+        }
     }
 
-   
-    
 }
